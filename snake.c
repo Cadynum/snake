@@ -241,8 +241,8 @@ int main()
 	}
 	SDL_WM_SetCaption("Snake", NULL);
 	screen = SDL_SetVideoMode(SNAKE_W*bit_jump-bit_space,
-							 (SNAKE_H+SNAKE_DRAW_OFFSET) * bit_jump-bit_space,
-							 32, SDL_SWSURFACE);
+		(SNAKE_H+SNAKE_DRAW_OFFSET) * bit_jump-bit_space,
+		32, SDL_SWSURFACE);
 	assert(screen);
 
 	//Open fonts
@@ -252,11 +252,11 @@ int main()
 	assert(fontmini);
 
 	//Prerendered text
-	txt_score		= TTF_RenderText_Blended(font,		"score: ",			fontcolor);
-	txt_snake		= TTF_RenderText_Blended(font,		"cadynum's snake",	fontcolor);
-	txt_press		= TTF_RenderText_Blended(fontmini, 	"press <space> to start",	fontcolor);
+	txt_score	= TTF_RenderText_Blended(font,		"score: ",			fontcolor);
+	txt_snake	= TTF_RenderText_Blended(font,		"cadynum's snake",		fontcolor);
+	txt_press	= TTF_RenderText_Blended(fontmini, 	"press <space> to start",	fontcolor);
 	txt_speedlvl	= TTF_RenderText_Blended(fontmini,	"speed: ",			fontcolor);
-	txt_level		= TTF_RenderText_Blended(fontmini,	"level: ",			fontcolor);
+	txt_level	= TTF_RenderText_Blended(fontmini,	"level: ",			fontcolor);
 	for (uint i=0; i<MAX_SPEED; i++) {
 		speeds[i].txt = TTF_RenderText_Blended(fontmini, speeds[i].name, fontcolor);
 	}
@@ -605,20 +605,20 @@ void SDL_BlitSpecial(enum orentation xor, int xoff, enum orentation yor, int yof
 	SDL_Rect rect;
 
 	switch(xor) {
-		case CENTERMIN:	rect.x = dst->w/2 - src->w;		break;
-		case CENTERMAX:	rect.x = dst->w/2;				break;
+		case CENTERMIN:	rect.x = dst->w/2 - src->w;	break;
+		case CENTERMAX:	rect.x = dst->w/2;		break;
 		case CENTER:	rect.x = dst->w/2 - src->w/2;	break;
-		case MIN:		rect.x = 0;						break;
-		case MAX:		rect.x = dst->w - src->w;		break;
+		case MIN:	rect.x = 0;			break;
+		case MAX:	rect.x = dst->w - src->w;	break;
 	}
 	rect.x += xoff;
 
 	switch(yor) {
-		case CENTERMIN:	rect.y = dst->h/2 - src->h;		break;
-		case CENTERMAX:	rect.y = dst->h/2;				break;
+		case CENTERMIN:	rect.y = dst->h/2 - src->h;	break;
+		case CENTERMAX:	rect.y = dst->h/2;		break;
 		case CENTER:	rect.y = dst->h/2 - src->h/2;	break;
-		case MIN:		rect.y = 0;						break;
-		case MAX:		rect.y = dst->h - src->h;		break;
+		case MIN:	rect.y = 0;			break;
+		case MAX:	rect.y = dst->h - src->h;	break;
 	}
 	rect.y += yoff;
 
