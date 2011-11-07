@@ -19,7 +19,6 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
 #include <math.h>
-#include <assert.h>
 
 
 #define VTYPE int
@@ -253,27 +252,34 @@ bool dim = true;
 
 
 #include "snake.p"
-int main()
+int main(int argc, char *argv[])
 {
 	bit_jump = bit_space + bit_width;
 	cbuf_init(&inputs);
 
 	//Init SDL
-	if( SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) == -1 || TTF_Init() == -1 ) {
-		fprintf(stderr, "Init SDL: %s\n", SDL_GetError());
-		exit(1);
-	}
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) == -1)
+		goto sdlerr;
+
+	if (TTF_Init() == -1)
+		goto ttferr;
+
 	SDL_WM_SetCaption("Snake", NULL);
 	screen = SDL_SetVideoMode(SNAKE_W*bit_jump-bit_space,
 		(SNAKE_H+SNAKE_DRAW_OFFSET) * bit_jump-bit_space,
 		32, SDL_SWSURFACE);
-	assert(screen);
+	if (!screen)
+		goto sdlerr;
 
 	//Open fonts
- 	font = TTF_OpenFont("font.ttf", bit_jump * 3);
- 	fontmini = TTF_OpenFont("font.ttf", bit_jump * 2);
-	assert(font);
-	assert(fontmini);
+	SDL_RWops * fontfx = SDL_RWFromFile("font.ttf", "r");
+	if (!fontfx)
+		goto sdlerr;
+ 	font = TTF_OpenFontRW(fontfx, false, bit_jump * 3);
+	SDL_RWseek(fontfx, 0, 0);
+ 	fontmini = TTF_OpenFontRW(fontfx, true,  bit_jump * 2);
+ 	if (!font || !fontmini)
+		goto ttferr;
 
 	//Prerendered text
 	txt_score	= TTF_RenderText_Blended(font,		"score: ",			fontcolor);
@@ -321,11 +327,18 @@ int main()
 	for(uint i=0; i<MAX_LEVEL; i++) {
 		SDL_FreeSurface(levels[i].txt);
 	}
+
 	TTF_CloseFont( font );
 	TTF_CloseFont( fontmini );
 	TTF_Quit();
 	SDL_Quit();
 	return 0;
+
+sdlerr:	puts (SDL_GetError());
+	return 1;
+
+ttferr:	puts (TTF_GetError());
+	return 1;
 }
 
 void grid_draw()
@@ -584,10 +597,6 @@ void snake_move(snake * s, enum direction velocity)
 		s->bits[i] = s->bits[i-1];
 	}
 	s->bits[0] = s->head;
-
-
-
-
 }
 
 

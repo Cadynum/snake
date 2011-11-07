@@ -1,9 +1,10 @@
 CC=gcc
 CPROTO=cproto
 CPROTOFLAGS=-q -e  -s
-CFLAGS=-c -Wall -Wextra -pedantic -std=c99 -pipe -O3 -fomit-frame-pointer
+CFLAGS=-Wall -Wextra -pedantic -std=c99 -pipe -O2 -fomit-frame-pointer
 #CFLAGS= -c -Wall -Wextra -pedantic -std=c99 -pipe -O2 -g -ggdb
 LDFLAGS=-lSDL -lSDL_ttf
+STRIP=-s
 SOURCES=snake.c
 OBJECTS=$(SOURCES:.c=.o)
 PROTOTYPES=$(SOURCES:.c=.p)
@@ -16,10 +17,10 @@ proto: $(SOURCES) $(PROTOTYPES)
 compile: $(SOURCES) $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+	$(CC) $(STRIP) $(LDFLAGS) $(OBJECTS) -o $@
 
 .c.o:
-	$(CC) $(CFLAGS) $(INCLUDES) $< -o $@
+	$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@
 
 .c.p:
 	@$(CPROTO) $(CPROTOFLAGS) $(INCLUDES) $< -o $@ &>/dev/null

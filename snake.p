@@ -1,0 +1,21 @@
+/* snake.c */
+static void cbuf_init(cbuf *c);
+static void cbuf_push(cbuf *c, int new);
+static int cbuf_pop(cbuf *c);
+extern int main(int argc, char *argv[]);
+extern void grid_draw(void);
+extern void state_start_event(SDL_Event *event);
+extern void state_start(void);
+extern void state_play(void);
+extern void state_play_event(SDL_Event *event);
+extern void state_dead_event(SDL_Event *event);
+extern void blit(SDL_Surface *screen, v2 co, u32 color);
+static void events(void);
+extern void apple_rand(v2 *apple, snake *s);
+extern void apple_draw(v2 *apple, SDL_Surface *screen);
+extern void snake_reset(snake *s);
+extern void snake_move(snake *s, enum direction velocity);
+extern void snake_draw(snake *s, SDL_Surface *screen);
+extern void glow_hline(SDL_Surface *dst, int pos, int size, u32 color);
+extern void glow_vline(SDL_Surface *dst, int xpos, int ystart, int yend, int size, u32 color);
+extern void SDL_BlitSpecial(enum orentation xor, int xoff, enum orentation yor, int yoff, SDL_Surface *src, SDL_Surface *dst);
